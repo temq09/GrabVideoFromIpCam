@@ -1,5 +1,0 @@
-this is test file.
-add line 1
-this is new line
-add line 2
-add line 3.
