@@ -31,3 +31,4 @@ cache
 Makefile
 *.Release
 *.Debug
+test_file.txt.orig
