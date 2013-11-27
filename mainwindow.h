@@ -81,7 +81,6 @@ private:
     void SetPath();
     void AddWidget(int indexWidget, int counterRow, int counterColumn);
 
-
 private slots:
     void HandleACtion4();
     void HandleAction9();

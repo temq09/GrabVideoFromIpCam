@@ -42,12 +42,13 @@ public:
     QPushButton *pb_StartRecord;
     QPushButton *pb_StopRecord;
     QCheckBox *cb_detectMotion;
+    QPushButton *pb_X;
 
     void setupUi(QWidget *VideoStreamView)
     {
         if (VideoStreamView->objectName().isEmpty())
             VideoStreamView->setObjectName(QStringLiteral("VideoStreamView"));
-        VideoStreamView->resize(335, 264);
+        VideoStreamView->resize(335, 267);
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -136,6 +137,11 @@ public:
 
         horizontalLayout_2->addWidget(cb_detectMotion);
 
+        pb_X = new QPushButton(groupBox);
+        pb_X->setObjectName(QStringLiteral("pb_X"));
+
+        horizontalLayout_2->addWidget(pb_X);
+
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
@@ -160,6 +166,7 @@ public:
         pb_StartRecord->setText(QApplication::translate("VideoStreamView", "\320\235\320\260\321\207\320\260\321\202\321\214 \320\267\320\260\320\277\320\270\321\201\321\214", 0));
         pb_StopRecord->setText(QApplication::translate("VideoStreamView", "\320\236\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\267\320\260\320\277\320\270\321\201\321\214", 0));
         cb_detectMotion->setText(QApplication::translate("VideoStreamView", "\320\224\320\260\321\202\321\207\320\270\320\272 \320\264\320\262\320\270\320\266.", 0));
+        pb_X->setText(QApplication::translate("VideoStreamView", "X", 0));
     } // retranslateUi
 
 };

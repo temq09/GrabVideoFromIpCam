@@ -170,6 +170,7 @@ public:
 
         lv_listOfCam = new myListView(frame);
         lv_listOfCam->setObjectName(QStringLiteral("lv_listOfCam"));
+        lv_listOfCam->setDragEnabled(false);
         lv_listOfCam->setDragDropMode(QAbstractItemView::DragOnly);
 
         verticalLayout_3->addWidget(lv_listOfCam);

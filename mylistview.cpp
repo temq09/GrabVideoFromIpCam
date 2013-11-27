@@ -13,17 +13,10 @@ void myListView::mousePressEvent(QMouseEvent *event)
         qDebug() << "mouse press left button";
         dragStartPos = event->pos();
     }
-
 }
 
 void myListView::mouseMoveEvent(QMouseEvent *e)
 {
-    /*if(!(e->button() & Qt::LeftButton))
-    {
-        qDebug() << "qqqq";
-     d:\Qt\Qt_5.1.1\Tools\QtCreator\bin\   return;
-    }*/
-
     if((e->pos() - dragStartPos).manhattanLength() < QApplication::startDragDistance())
     {
         qDebug() << "eee";
@@ -38,4 +31,5 @@ void myListView::mouseMoveEvent(QMouseEvent *e)
     mimeData->setData("application/infoCamera", QByteArray());
     drag->setMimeData(mimeData);
     drag->exec();
+
 }

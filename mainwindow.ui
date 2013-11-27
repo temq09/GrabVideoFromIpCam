@@ -168,6 +168,9 @@
          </item>
          <item>
           <widget class="myListView" name="lv_listOfCam">
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
            <property name="dragDropMode">
             <enum>QAbstractItemView::DragOnly</enum>
            </property>
