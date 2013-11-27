@@ -20,7 +20,6 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QCloseEvent>
-#include <mystringlistmodel.h>
 #include <QEvent>
 
 namespace Ui {
