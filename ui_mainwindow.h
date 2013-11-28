@@ -49,6 +49,9 @@ public:
     QToolButton *pb_SetPath;
     QLabel *label_2;
     QComboBox *cb_duration;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_4;
+    QLineEdit *lineEdit;
     QLabel *label_3;
     QPushButton *pb_4;
     QPushButton *pb_9;
@@ -138,6 +141,22 @@ public:
 
         verticalLayout_2->addWidget(cb_duration);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        label_4 = new QLabel(frame);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        horizontalLayout_3->addWidget(label_4);
+
+        lineEdit = new QLineEdit(frame);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+
+        horizontalLayout_3->addWidget(lineEdit);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_3);
+
 
         verticalLayout_3->addLayout(verticalLayout_2);
 
@@ -223,6 +242,7 @@ public:
          << QApplication::translate("MainWindow", "8 \320\274\320\270\320\275\321\203\321\202", 0)
          << QApplication::translate("MainWindow", "1 \321\204\320\260\320\271\320\273", 0)
         );
+        label_4->setText(QApplication::translate("MainWindow", "\320\232\320\260\320\264\321\200\320\276\320\262 \320\262 \321\201\320\265\320\272\321\203\320\275\320\264\321\203", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \320\272\320\260\320\274\320\265\321\200", 0));
         pb_4->setText(QApplication::translate("MainWindow", "4", 0));
         pb_9->setText(QApplication::translate("MainWindow", "9", 0));

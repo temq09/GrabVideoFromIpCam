@@ -24,6 +24,7 @@
 #include <opencv/highgui.h>
 #include <opencv/cxcore.h>
 #include <detectmotion.h>
+#include <QtConcurrent/QtConcurrent>
 
 namespace Ui {
 class VideoStreamView;
@@ -65,8 +66,10 @@ private:
     QString connectioString;
     int needWidth;
     int needHeight;
+    int stepGrabFrame;
     CvVideoWriter *writer;
     DetectMotion* detectmotion;
+    QTimer* timerFrame;
 
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event); 
@@ -77,6 +80,7 @@ private:
     void ReleaseResources();
     void GrabFrame();
     void ReSizeImg();
+    bool InitializeCapture();
     IplImage* GetCurrentFrame();
 
 private slots:
@@ -84,9 +88,12 @@ private slots:
     void slot_StopRecord();
     void slot_changeMotionDetect(int state);
     void slot_EndRecordTime();
+    void slot_spotStream();
+    void slot_StartStream();
 
 signals:
     void signal_SendIpAdress(QString ipAdress, int id);
+    void signal_GrabFrameEnd();
 };
 
 #endif // VIDEOSTREAMVIEW_H
