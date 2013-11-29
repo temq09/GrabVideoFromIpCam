@@ -70,10 +70,10 @@ private:
     CvVideoWriter *writer;
     DetectMotion* detectmotion;
     QTimer* timerFrame;
+    int countFrame;
 
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event); 
-    void StartStream();
     void StartRecord();
     void GenerateFileName(QString path);
     QImage IplImage2QImage(IplImage *iplImage);
@@ -88,7 +88,6 @@ private slots:
     void slot_StopRecord();
     void slot_changeMotionDetect(int state);
     void slot_EndRecordTime();
-    void slot_spotStream();
     void slot_StartStream();
 
 signals:

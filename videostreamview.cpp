@@ -19,12 +19,14 @@ VideoStreamView::VideoStreamView(int Duration, int IDWidget, QString Path, QWidg
     stateRecordVideo(false),
     stateMotionDetector(false),
     detectmotion(nullptr),
-    stepGrabFrame(10)
+    stepGrabFrame(10),
+    countFrame(0)
 {
     ui->setupUi(this);
     ui->lb_video->setAcceptDrops(true);
     this->setAcceptDrops(true);
     ui->lb_video->installEventFilter(this);
+    ui->cb_detectMotion->setEnabled(false);
     timer = nullptr;
     writer = nullptr;
     timerFrame = new QTimer(this);
@@ -32,7 +34,6 @@ VideoStreamView::VideoStreamView(int Duration, int IDWidget, QString Path, QWidg
     connect(ui->pb_StartRecord, SIGNAL(clicked()),this, SLOT(slot_StartRecord()));
     connect(ui->pb_StopRecord, SIGNAL(clicked()), this , SLOT(slot_StopRecord()));
     connect(ui->cb_detectMotion, SIGNAL(stateChanged(int)), this, SLOT(slot_changeMotionDetect(int)));
-    connect(ui->pb_X, SIGNAL(clicked()), SLOT(slot_spotStream()));
     connect(this, SIGNAL(signal_GrabFrameEnd()), SLOT(slot_StartStream()));
     connect(timerFrame, SIGNAL(timeout()), SLOT(slot_StartStream()));
 }
@@ -54,13 +55,6 @@ bool VideoStreamView::InitializeCapture()
     }
 }
 
-
-//дулать этот метод после отладки
-void VideoStreamView::slot_spotStream()
-{
-    stateVideo = false;
-}
-
 VideoStreamView::~VideoStreamView()
 {
     qDebug() <<"Запускаем деструктор класса " << this->objectName() << "with id = " << this->idWidget;
@@ -75,11 +69,6 @@ VideoStreamView::~VideoStreamView()
 }
 
 void VideoStreamView::slot_StartStream()
-{
-    StartStream();
-}
-
-void VideoStreamView::StartStream()
 {
     if(p_capture && stateVideo)
     {
@@ -106,18 +95,20 @@ void VideoStreamView::GrabFrame()
         if(stateMotionDetector && !stateRecordVideo)
         {
             //передаем кадры классу детоктора движения
-            if(detectmotion)
+            if(detectmotion && 24 == countFrame)
+            {
                 detectmotion->detectMotion(imgFromCam);
-            qDebug() << "1";
+                countFrame = 0;
+            }
+            else
+                countFrame++;
         }
         if(stateRecordVideo)
         {
             cvWriteFrame(writer, imgFromCam);
         }
         cvResize(imgFromCam, img);
-        //qDebug() << img->width << img->height;
         ui->lb_video->setPixmap(QPixmap::fromImage(IplImage2QImage(img)));
-        //cvWaitKey(33);
         cvReleaseImage(&img);
     }
     catch(...)
@@ -323,7 +314,10 @@ void VideoStreamView::SetDataAboutCamera(QString IPAdress, QString Port, QString
     connectioString = QString("http://%1:%4/videostream.cgi?loginuse=%2&loginpas=%3&.mjpg").arg(this->ipAdress).arg(this->login).arg(this->password).arg(this->port);
     qDebug() << connectioString;
     if(InitializeCapture())
-        StartStream();
+    {
+        slot_StartStream();
+        ui->cb_detectMotion->setEnabled(true);
+    }
 }
 
 void VideoStreamView::durationChange(int Duration)

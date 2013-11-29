@@ -48,7 +48,7 @@ public:
     {
         if (VideoStreamView->objectName().isEmpty())
             VideoStreamView->setObjectName(QStringLiteral("VideoStreamView"));
-        VideoStreamView->resize(335, 267);
+        VideoStreamView->resize(416, 267);
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -134,6 +134,7 @@ public:
 
         cb_detectMotion = new QCheckBox(groupBox);
         cb_detectMotion->setObjectName(QStringLiteral("cb_detectMotion"));
+        cb_detectMotion->setTristate(false);
 
         horizontalLayout_2->addWidget(cb_detectMotion);
 

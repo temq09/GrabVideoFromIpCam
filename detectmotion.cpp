@@ -6,7 +6,7 @@ DetectMotion::DetectMotion(IplImage *firstFrame)
     currentFrame = cvCreateMat(firstFrame->height, firstFrame->width, firstFrame->depth);
     cont = nullptr;
     mem = cvCreateMemStorage(0);
-    minRadius = 10;
+    minRadius = 1;
     prevFrameIsAviable = false;
 }
 
