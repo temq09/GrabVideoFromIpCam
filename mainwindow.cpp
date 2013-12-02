@@ -245,7 +245,7 @@ void MainWindow::slot_SetPath()
     qDebug() <<"Set path.";
     QString pathDir = QFileDialog::getExistingDirectory(this,
                                                         "Укажите путь",
-                                                        "C:\videoFromCam",
+                                                        "C:\\videoFromCam",
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
     if(!pathDir.isEmpty())

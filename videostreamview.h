@@ -85,7 +85,7 @@ private:
     bool InitializeCapture();
     IplImage* GetCurrentFrame();
     void ChangeRecordBideoLabel(bool state);
-    //void StartRecord();
+    quint64 CalcSizeLastFile();
 
 private slots:
     void slot_StartRecord();

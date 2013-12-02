@@ -270,9 +270,11 @@ void VideoStreamView::slot_EndRecordTime()
     qDebug() << "Record time is ended.";
     //в данный метод входим после таймаута таймера записи видео.
 
+    //Определяем размер последнего записанного файла
+    CalcSizeLastFile();
+
     //если датчик движения включен, то флаг записи устанавливаем в фолсе,
     //это значит что прекращаем запись видео до момента следующего срабатывания датчика
-
     if(stateMotionDetector)
     {
         slot_StopRecord();
@@ -307,6 +309,17 @@ void VideoStreamView::slot_StopRecord()
         ChangeRecordBideoLabel(stateRecordVideo);
     }
     qDebug() << "Stop Record";
+}
+
+quint64 VideoStreamView::CalcSizeLastFile()
+{
+    QFileInfo fileInfo(nameVideo);
+    if(fileInfo.isFile())
+    {
+        quint64 fileSize = fileInfo.size();
+        qDebug() << "Размер файла: " << nameVideo << " = " << fileSize;
+        return fileSize;
+    }
 }
 
 void VideoStreamView::dragEnterEvent(QDragEnterEvent *event)

@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     videostreamview.cpp \
     dialog_addcamera.cpp \
     mylistview.cpp \
-    detectmotion.cpp
+    detectmotion.cpp \
+    filemeneger.cpp
 
 HEADERS  += mainwindow.h \
     videostreamview.h \
     dialog_addcamera.h \
     mylistview.h \
-    detectmotion.h
+    detectmotion.h \
+    filemeneger.h
 
 FORMS    += mainwindow.ui \
     videostreamview.ui \
