@@ -35,20 +35,19 @@ public:
     QLabel *label;
     QLabel *lb_status;
     QLabel *label_2;
-    QLabel *label_3;
+    QLabel *lb_stateRecord;
     QSpacerItem *horizontalSpacer;
     QLabel *lb_video;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pb_StartRecord;
     QPushButton *pb_StopRecord;
     QCheckBox *cb_detectMotion;
-    QPushButton *pb_X;
 
     void setupUi(QWidget *VideoStreamView)
     {
         if (VideoStreamView->objectName().isEmpty())
             VideoStreamView->setObjectName(QStringLiteral("VideoStreamView"));
-        VideoStreamView->resize(416, 267);
+        VideoStreamView->resize(335, 266);
         QSizePolicy sizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -86,12 +85,12 @@ public:
 
         horizontalLayout->addWidget(label_2);
 
-        label_3 = new QLabel(groupBox);
-        label_3->setObjectName(QStringLiteral("label_3"));
-        sizePolicy1.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
-        label_3->setSizePolicy(sizePolicy1);
+        lb_stateRecord = new QLabel(groupBox);
+        lb_stateRecord->setObjectName(QStringLiteral("lb_stateRecord"));
+        sizePolicy1.setHeightForWidth(lb_stateRecord->sizePolicy().hasHeightForWidth());
+        lb_stateRecord->setSizePolicy(sizePolicy1);
 
-        horizontalLayout->addWidget(label_3);
+        horizontalLayout->addWidget(lb_stateRecord);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -138,11 +137,6 @@ public:
 
         horizontalLayout_2->addWidget(cb_detectMotion);
 
-        pb_X = new QPushButton(groupBox);
-        pb_X->setObjectName(QStringLiteral("pb_X"));
-
-        horizontalLayout_2->addWidget(pb_X);
-
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
@@ -162,12 +156,11 @@ public:
         label->setText(QApplication::translate("VideoStreamView", "\320\241\321\202\320\260\321\202\321\203\321\201 - ", 0));
         lb_status->setText(QApplication::translate("VideoStreamView", "\320\275\320\265\321\202 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
         label_2->setText(QApplication::translate("VideoStreamView", ",", 0));
-        label_3->setText(QApplication::translate("VideoStreamView", "\320\267\320\260\320\277\320\270\321\201\321\214 \320\276\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\275\320\260", 0));
+        lb_stateRecord->setText(QApplication::translate("VideoStreamView", "\320\267\320\260\320\277\320\270\321\201\321\214 \320\276\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\275\320\260", 0));
         lb_video->setText(QString());
         pb_StartRecord->setText(QApplication::translate("VideoStreamView", "\320\235\320\260\321\207\320\260\321\202\321\214 \320\267\320\260\320\277\320\270\321\201\321\214", 0));
         pb_StopRecord->setText(QApplication::translate("VideoStreamView", "\320\236\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\267\320\260\320\277\320\270\321\201\321\214", 0));
         cb_detectMotion->setText(QApplication::translate("VideoStreamView", "\320\224\320\260\321\202\321\207\320\270\320\272 \320\264\320\262\320\270\320\266.", 0));
-        pb_X->setText(QApplication::translate("VideoStreamView", "X", 0));
     } // retranslateUi
 
 };

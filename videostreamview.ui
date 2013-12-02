@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>267</height>
+    <width>335</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -68,7 +68,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="lb_stateRecord">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -152,13 +152,6 @@
           </property>
           <property name="tristate">
            <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pb_X">
-          <property name="text">
-           <string>X</string>
           </property>
          </widget>
         </item>

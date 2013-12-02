@@ -21,6 +21,7 @@
 #include <QMimeData>
 #include <QCloseEvent>
 #include <QEvent>
+#include <QFileDialog>
 
 namespace Ui {
 class MainWindow;
@@ -88,10 +89,12 @@ private slots:
     void AddCamera();
     void slot_SendInfoAboutCam(QString IPAdress, int IDobject);
     void slot_GetDurationVideo();
+    void slot_SetPath();
 
 signals:
     void signal_durationChanged(int duration);
     void signal_appClose();
+    void signal_pathChanged(QString newPath);
 };
 
 #endif // MAINWINDOW_H

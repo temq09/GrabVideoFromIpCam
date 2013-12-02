@@ -44,7 +44,7 @@ public:
 
 public slots:
     void durationChange(int Duration);
-    void pathChange(QString Path);
+    void pathChange(QString newPath);
     void StopStream();
 
 
@@ -71,6 +71,8 @@ private:
     DetectMotion* detectmotion;
     QTimer* timerFrame;
     int countFrame;
+    QString RecordIsActive;
+    QString RecordIsNoActive;
 
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event); 
@@ -82,6 +84,8 @@ private:
     void ReSizeImg();
     bool InitializeCapture();
     IplImage* GetCurrentFrame();
+    void ChangeRecordBideoLabel(bool state);
+    //void StartRecord();
 
 private slots:
     void slot_StartRecord();

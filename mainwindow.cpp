@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pb_16, SIGNAL(clicked()), SLOT(HandleACtion16()));
     connect(ui->pb_addCam, SIGNAL(clicked()), SLOT(AddCamera()));
     connect(ui->cb_duration, SIGNAL(currentIndexChanged(int)), SLOT(slot_GetDurationVideo()));
+    connect(ui->pb_SetPath, SIGNAL(clicked()), SLOT(slot_SetPath()));
     currentCountVideoWidget = 0;
     initializeForm(4);
 }
@@ -63,6 +64,7 @@ void MainWindow::AddWidget(int indexWidget, int counterRow, int counterColumn)
     connect(vectorOfWidget.last().data(), SIGNAL(signal_SendIpAdress(QString,int)), this, SLOT(slot_SendInfoAboutCam(QString,int)));
     connect(this, SIGNAL(signal_durationChanged(int)), vectorOfWidget.last().data(), SLOT(durationChange(int)));
     connect(this, SIGNAL(signal_appClose()), vectorOfWidget.last().data(), SLOT(StopStream()));
+    connect(this, SIGNAL(signal_pathChanged(QString)), vectorOfWidget.last().data(), SLOT(pathChange(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -236,4 +238,20 @@ void MainWindow::closeEvent(QCloseEvent *event)
     emit signal_appClose();
     qDebug() << "Закрываем приложение";
     event->accept();
+}
+
+void MainWindow::slot_SetPath()
+{
+    qDebug() <<"Set path.";
+    QString pathDir = QFileDialog::getExistingDirectory(this,
+                                                        "Укажите путь",
+                                                        "C:\videoFromCam",
+                                                        QFileDialog::ShowDirsOnly
+                                                        | QFileDialog::DontResolveSymlinks);
+    if(!pathDir.isEmpty())
+    {
+        this->path = pathDir;
+        ui->le_Path->setText(pathDir);
+        emit signal_pathChanged(pathDir);
+    }
 }

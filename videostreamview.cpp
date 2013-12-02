@@ -20,7 +20,9 @@ VideoStreamView::VideoStreamView(int Duration, int IDWidget, QString Path, QWidg
     stateMotionDetector(false),
     detectmotion(nullptr),
     stepGrabFrame(10),
-    countFrame(0)
+    countFrame(0),
+    RecordIsActive("запись активна"),
+    RecordIsNoActive("запись не активна")
 {
     ui->setupUi(this);
     ui->lb_video->setAcceptDrops(true);
@@ -30,6 +32,7 @@ VideoStreamView::VideoStreamView(int Duration, int IDWidget, QString Path, QWidg
     timer = nullptr;
     writer = nullptr;
     timerFrame = new QTimer(this);
+    ChangeRecordBideoLabel(stateRecordVideo);
 
     connect(ui->pb_StartRecord, SIGNAL(clicked()),this, SLOT(slot_StartRecord()));
     connect(ui->pb_StopRecord, SIGNAL(clicked()), this , SLOT(slot_StopRecord()));
@@ -196,6 +199,20 @@ void VideoStreamView::StopStream()
 
 void VideoStreamView::slot_StartRecord()
 {
+    if(!stateVideo)
+    {
+        qDebug() << "Трансляция не активна. Запись не возможна";
+        return;
+    }
+    if(stateRecordVideo)
+    {
+        slot_StopRecord();
+    }
+    StartRecord();
+}
+
+void VideoStreamView::StartRecord()
+{
     //удаляем старый таймер если он есть
     if(timer)
     {
@@ -211,7 +228,7 @@ void VideoStreamView::slot_StartRecord()
     }
     //генерируем путь
     QDateTime date = QDateTime::currentDateTime();
-    QString pathTemp = QString("%1\\%2\\%3").arg(path).arg(date.date().month()).arg(date.date().day());
+    QString pathTemp = QString("%1\\%2\\%3\\%4").arg(path).arg(date.date().month()).arg(date.date().day()).arg(this->ipAdress);
     qDebug() << pathTemp;
     QDir dir;
     if(dir.mkpath(pathTemp))
@@ -225,6 +242,7 @@ void VideoStreamView::slot_StartRecord()
                 //если писатель успешно создан, то флаг записи устанавливаем в тру
                 qDebug() << "Writer create completed";
                 stateRecordVideo = true;
+                ChangeRecordBideoLabel(stateRecordVideo);
             }
 
             //если продолжительность не равно нулю(т.е. пишем не в один файл)
@@ -238,6 +256,7 @@ void VideoStreamView::slot_StartRecord()
         {
             qDebug() << "Error when creating writer";
             stateRecordVideo = false;
+            ChangeRecordBideoLabel(stateRecordVideo);
         }
     }
     else
@@ -285,6 +304,7 @@ void VideoStreamView::slot_StopRecord()
         cvReleaseVideoWriter(&writer);
         stateRecordVideo = false;
         writer = nullptr;
+        ChangeRecordBideoLabel(stateRecordVideo);
     }
     qDebug() << "Stop Record";
 }
@@ -326,9 +346,9 @@ void VideoStreamView::durationChange(int Duration)
     this->duration = Duration;
 }
 
-void VideoStreamView::pathChange(QString Path)
+void VideoStreamView::pathChange(QString newPath)
 {
-    this->path = Path;
+    this->path = newPath;
 }
 
 void VideoStreamView::GenerateFileName(QString path)
@@ -393,4 +413,18 @@ IplImage *VideoStreamView::GetCurrentFrame()
 {
     if(p_capture)
         return cvQueryFrame(p_capture);
+    else
+        return NULL;
+}
+
+void VideoStreamView::ChangeRecordBideoLabel(bool state)
+{
+    if(state)
+    {
+        ui->lb_stateRecord->setText(RecordIsActive);
+    }
+    else
+    {
+        ui->lb_stateRecord->setText(RecordIsNoActive);
+    }
 }
