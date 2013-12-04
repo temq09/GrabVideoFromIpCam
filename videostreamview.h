@@ -97,6 +97,7 @@ private slots:
 signals:
     void signal_SendIpAdress(QString ipAdress, int id);
     void signal_GrabFrameEnd();
+    void signal_SendSizeFile(quint64 sizeFile);
 };
 
 #endif // VIDEOSTREAMVIEW_H

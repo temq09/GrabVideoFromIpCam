@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     slot_GetDurationVideo();
     path = "C:\\VideoFromCam";
     ui->le_Path->setText(path);
+    maxSizeALlFiles = 200000; // 200Mb.
+    currentSizeALlFiles = 0;
 
     connect(ui->pb_4, SIGNAL(clicked()), SLOT(HandleACtion4()));
     connect(ui->pb_9, SIGNAL(clicked()), SLOT(HandleAction9()));
@@ -65,6 +67,7 @@ void MainWindow::AddWidget(int indexWidget, int counterRow, int counterColumn)
     connect(this, SIGNAL(signal_durationChanged(int)), vectorOfWidget.last().data(), SLOT(durationChange(int)));
     connect(this, SIGNAL(signal_appClose()), vectorOfWidget.last().data(), SLOT(StopStream()));
     connect(this, SIGNAL(signal_pathChanged(QString)), vectorOfWidget.last().data(), SLOT(pathChange(QString)));
+    connect(vectorOfWidget.last().data(), SIGNAL(signal_SendSizeFile(quint64)), this, SLOT(slot_AddNewFileSize(quint64)));
 }
 
 MainWindow::~MainWindow()
@@ -253,5 +256,17 @@ void MainWindow::slot_SetPath()
         this->path = pathDir;
         ui->le_Path->setText(pathDir);
         emit signal_pathChanged(pathDir);
+    }
+}
+
+void MainWindow::slot_AddNewFileSize(quint64 newFileSize)
+{
+    currentSizeALlFiles += newFileSize;
+    if((maxSizeALlFiles - currentSizeALlFiles) < 100000)
+    {
+        FileMeneger filemeneger;
+        //filemeneger.ClearDir(this->path);
+        QString pathToDir = this->path;
+        QFuture<void> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, pathToDir);
     }
 }

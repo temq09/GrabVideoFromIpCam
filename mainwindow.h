@@ -22,6 +22,8 @@
 #include <QCloseEvent>
 #include <QEvent>
 #include <QFileDialog>
+#include <filemeneger.h>
+#include <QtConcurrent/QtConcurrentRun>
 
 namespace Ui {
 class MainWindow;
@@ -73,6 +75,8 @@ private:
     QStringListModel model;
     int durationVideo;
     QString path;
+    int maxSizeALlFiles;
+    int currentSizeALlFiles;
 
     //Methods
     void decrementCountVideoWidget(int count);
@@ -90,6 +94,7 @@ private slots:
     void slot_SendInfoAboutCam(QString IPAdress, int IDobject);
     void slot_GetDurationVideo();
     void slot_SetPath();
+    void slot_AddNewFileSize(quint64 newFileSize);
 
 signals:
     void signal_durationChanged(int duration);

@@ -5,26 +5,26 @@
 #include <QObject>
 #include <QList>
 #include <QTextCodec>
+#include <QDateTime>
 
 class FileMeneger : public QObject
 {
     Q_OBJECT
 
 public:
-    FileMeneger();
+    explicit FileMeneger(QObject *parent = 0);
     ~FileMeneger();
     void CalcSizeDir();
+    void ClearDir(QString pathForClear);
+    QString rootPath;
+    QString FindOldFile(QString path);
+    bool DeleteOldFile(QString pathToDelete);
 
 public slots:
-    void SetPathForCalcSize(QString path);
+    void SetPathForCalcSize(QString path); 
 
 private:
-    QString rootPath;
-
-private slots:
-
-signals:
-
+    Q_DISABLE_COPY(FileMeneger)
 };
 
 #endif // FILEMENEGER_H
