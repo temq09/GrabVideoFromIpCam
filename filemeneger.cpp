@@ -10,15 +10,21 @@ FileMeneger::~FileMeneger()
     qDebug() << "Деструктор файл менеджера";
 }
 
-void FileMeneger::ClearDir(QString pathForClear)
+quint64 FileMeneger::ClearDir(QString pathForClear)
 {
     qDebug() << "Функция очистки от старых файлов";
-    QString oldFile = FindOldFile(pathForClear);
+    quint64 sizeDeletedFile = 0;
+    QString oldFile = FindOldFile(pathForClear, sizeDeletedFile);
     if(DeleteOldFile(oldFile))
+    {
         qDebug() << "Файл - " << oldFile << "удален";
+        return sizeDeletedFile;
+    }
+    else
+        return 0;
 }
 
-QString FileMeneger::FindOldFile(QString path)
+QString FileMeneger::FindOldFile(QString path, quint64 &sizeDeletedFile)
 {
     qDebug() << "Ищем самый старый файл";
     QList<QString> dirList;
@@ -55,6 +61,7 @@ QString FileMeneger::FindOldFile(QString path)
         }
     }
     qDebug() << "Самый старый файл - " << oldFile.filePath();
+    sizeDeletedFile = oldFile.size();
     return oldFile.filePath();
 }
 

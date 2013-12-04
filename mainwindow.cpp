@@ -8,10 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     slot_GetDurationVideo();
+    SetLineEditDigitValidator();
     path = "C:\\VideoFromCam";
     ui->le_Path->setText(path);
     maxSizeALlFiles = 200000; // 200Mb.
     currentSizeALlFiles = 0;
+    ui->le_SizeDir->setText("0");
 
     connect(ui->pb_4, SIGNAL(clicked()), SLOT(HandleACtion4()));
     connect(ui->pb_9, SIGNAL(clicked()), SLOT(HandleAction9()));
@@ -19,8 +21,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pb_addCam, SIGNAL(clicked()), SLOT(AddCamera()));
     connect(ui->cb_duration, SIGNAL(currentIndexChanged(int)), SLOT(slot_GetDurationVideo()));
     connect(ui->pb_SetPath, SIGNAL(clicked()), SLOT(slot_SetPath()));
+    connect(ui->le_SizeDir, SIGNAL(editingFinished()), this, SLOT(slot_ChangeSizeDir()));
     currentCountVideoWidget = 0;
     initializeForm(4);
+    slot_ChangeSizeDir();
+}
+
+void MainWindow::SetLineEditDigitValidator()
+{
+    QValidator *validator = new QIntValidator(0, 100, this);
+    ui->le_SizeDir->setValidator(validator);
 }
 
 void MainWindow::slot_GetDurationVideo()
@@ -262,11 +272,32 @@ void MainWindow::slot_SetPath()
 void MainWindow::slot_AddNewFileSize(quint64 newFileSize)
 {
     currentSizeALlFiles += newFileSize;
-    if((maxSizeALlFiles - currentSizeALlFiles) < 100000)
+    if( 0 == maxSizeALlFiles)
+        return;
+    else
     {
+
         FileMeneger filemeneger;
         //filemeneger.ClearDir(this->path);
         QString pathToDir = this->path;
-        QFuture<void> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, pathToDir);
+        while((maxSizeALlFiles - currentSizeALlFiles) < 100000)
+        {
+            QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, pathToDir);
+            currentSizeALlFiles -= future.result();
+        }
+    }
+}
+
+void MainWindow::slot_ChangeSizeDir()
+{
+    if(0 == ui->le_SizeDir->text().toInt())
+    {
+        maxSizeALlFiles = 0;
+        qDebug() << "Размер папки не отслеживается";
+    }
+    else
+    {
+        maxSizeALlFiles = ui->le_SizeDir->text().toInt() * 1000000;                //переводим в байты
+        qDebug() << "Максимальный размер папки составляет - " << maxSizeALlFiles;
     }
 }

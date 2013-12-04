@@ -47,6 +47,9 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QLineEdit *le_Path;
     QToolButton *pb_SetPath;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label_5;
+    QLineEdit *le_SizeDir;
     QLabel *label_2;
     QComboBox *cb_duration;
     QHBoxLayout *horizontalLayout_3;
@@ -118,6 +121,7 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         le_Path = new QLineEdit(frame);
         le_Path->setObjectName(QStringLiteral("le_Path"));
+        le_Path->setReadOnly(true);
 
         horizontalLayout_2->addWidget(le_Path);
 
@@ -128,6 +132,23 @@ public:
 
 
         verticalLayout_2->addLayout(horizontalLayout_2);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        label_5 = new QLabel(frame);
+        label_5->setObjectName(QStringLiteral("label_5"));
+
+        horizontalLayout_4->addWidget(label_5);
+
+        le_SizeDir = new QLineEdit(frame);
+        le_SizeDir->setObjectName(QStringLiteral("le_SizeDir"));
+        le_SizeDir->setReadOnly(false);
+
+        horizontalLayout_4->addWidget(le_SizeDir);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_4);
 
         label_2 = new QLabel(frame);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -234,6 +255,7 @@ public:
         lb_settings->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\320\276\320\271\320\272\320\270 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\213", 0));
         label->setText(QApplication::translate("MainWindow", "\320\237\321\203\321\202\321\214 \321\201\320\276\321\205\321\200\320\260\320\275\320\265\320\275\320\270\321\217", 0));
         pb_SetPath->setText(QApplication::translate("MainWindow", "...", 0));
+        label_5->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\320\274\320\265\321\200 \320\277\320\260\320\277\320\272\320\270(Gb)", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\264\320\276\320\273\320\266\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214", 0));
         cb_duration->clear();
         cb_duration->insertItems(0, QStringList()

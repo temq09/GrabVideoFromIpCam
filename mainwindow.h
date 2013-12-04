@@ -85,6 +85,7 @@ private:
     void refreshCamList();
     void SetPath();
     void AddWidget(int indexWidget, int counterRow, int counterColumn);
+    void SetLineEditDigitValidator();
 
 private slots:
     void HandleACtion4();
@@ -95,6 +96,7 @@ private slots:
     void slot_GetDurationVideo();
     void slot_SetPath();
     void slot_AddNewFileSize(quint64 newFileSize);
+    void slot_ChangeSizeDir();
 
 signals:
     void signal_durationChanged(int duration);
