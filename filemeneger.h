@@ -14,7 +14,7 @@ class FileMeneger : public QObject
 public:
     explicit FileMeneger(QObject *parent = 0);
     ~FileMeneger();
-    void CalcSizeDir();
+    quint64 CalcSizeDir(QString pathToCurrentDir);
     quint64 ClearDir(QString pathForClear);
     QString rootPath;
     QString FindOldFile(QString path, quint64 &sizeDeletedFile);

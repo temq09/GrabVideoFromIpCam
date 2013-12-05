@@ -21,7 +21,10 @@ quint64 FileMeneger::ClearDir(QString pathForClear)
         return sizeDeletedFile;
     }
     else
+    {
+        qDebug() << "Не получается удалить файл";
         return 0;
+    }
 }
 
 QString FileMeneger::FindOldFile(QString path, quint64 &sizeDeletedFile)
@@ -72,9 +75,41 @@ bool FileMeneger::DeleteOldFile(QString pathToDelete)
     return fileToDelete.remove();
 }
 
-void FileMeneger::CalcSizeDir()
+quint64 FileMeneger::CalcSizeDir(QString pathToCurrentDir)
 {
+    qDebug() << "Определяем размер папки " << pathToCurrentDir;
+    QList<QString> dir;
+    dir.clear();
 
+    quint64 totalSize = 0;
+    dir.push_back(pathToCurrentDir);
+    while(!dir.isEmpty())
+    {
+        QString currentPathDir = dir.front();
+        dir.pop_front();
+        QDir currentFolder(currentPathDir);
+        currentFolder.setFilter(QDir::NoSymLinks | QDir::Files | QDir::Dirs);
+        currentFolder.setSorting(QDir::Name);
+        QFileInfoList fileInfo (currentFolder.entryInfoList());
+        foreach (QFileInfo file, fileInfo)
+        {
+            QString name = file.fileName();
+            if(name == "." || name == ".." || name.isEmpty())
+            {
+                continue;
+            }
+            else if(file.isDir())
+            {
+                dir.push_back(file.filePath());
+            }
+            else
+            {
+                totalSize += file.size();
+            }
+        }
+    }
+    qDebug() << "Размер папки " << pathToCurrentDir << " = " << totalSize;
+    return totalSize;
 }
 
 void FileMeneger::SetPathForCalcSize(QString path)

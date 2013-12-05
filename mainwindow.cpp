@@ -276,15 +276,9 @@ void MainWindow::slot_AddNewFileSize(quint64 newFileSize)
         return;
     else
     {
-
         FileMeneger filemeneger;
         //filemeneger.ClearDir(this->path);
-        QString pathToDir = this->path;
-        while((maxSizeALlFiles - currentSizeALlFiles) < 100000)
-        {
-            QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, pathToDir);
-            currentSizeALlFiles -= future.result();
-        }
+        ClearCurrentDir(filemeneger, this->path);
     }
 }
 
@@ -298,6 +292,19 @@ void MainWindow::slot_ChangeSizeDir()
     else
     {
         maxSizeALlFiles = ui->le_SizeDir->text().toInt() * 1000000;                //переводим в байты
+        FileMeneger filemeneger;
+        QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::CalcSizeDir, this->path);
+        currentSizeALlFiles = future.result();
+        ClearCurrentDir(filemeneger, this->path);
         qDebug() << "Максимальный размер папки составляет - " << maxSizeALlFiles;
+    }
+}
+
+void MainWindow::ClearCurrentDir(FileMeneger &filemeneger, QString path)
+{
+    while((maxSizeALlFiles - currentSizeALlFiles) < 100000)
+    {
+        QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, path);
+        currentSizeALlFiles -= future.result();
     }
 }

@@ -86,6 +86,7 @@ private:
     void SetPath();
     void AddWidget(int indexWidget, int counterRow, int counterColumn);
     void SetLineEditDigitValidator();
+    void ClearCurrentDir(FileMeneger &filemeneger, QString path);
 
 private slots:
     void HandleACtion4();
