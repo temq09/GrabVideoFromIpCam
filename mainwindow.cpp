@@ -291,20 +291,28 @@ void MainWindow::slot_ChangeSizeDir()
     }
     else
     {
-        maxSizeALlFiles = ui->le_SizeDir->text().toInt() * 1000000;                //переводим в байты
+        maxSizeALlFiles = ui->le_SizeDir->text().toInt() * Gb1;                //переводим в байты
+        qDebug() << "Максимальный размер папки составляет - " << maxSizeALlFiles;
         FileMeneger filemeneger;
         QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::CalcSizeDir, this->path);
         currentSizeALlFiles = future.result();
         ClearCurrentDir(filemeneger, this->path);
-        qDebug() << "Максимальный размер папки составляет - " << maxSizeALlFiles;
     }
 }
 
 void MainWindow::ClearCurrentDir(FileMeneger &filemeneger, QString path)
 {
-    while((maxSizeALlFiles - currentSizeALlFiles) < 100000)
+    int countDeletedFiles = 0;
+    int totalSizeDeletedFiles = 0;
+    while((maxSizeALlFiles - currentSizeALlFiles) < Mb100)
     {
         QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, path);
         currentSizeALlFiles -= future.result();
+        if(future.result()!=0)
+        {
+            countDeletedFiles++;
+            totalSizeDeletedFiles += future.result();
+        }
     }
+    qDebug() << "Результаты очистки:" << "\nфайлов удаленно - " << countDeletedFiles << "\nобщий размер удаленных файлов - " <<totalSizeDeletedFiles/Mb1 << "Мб";
 }
