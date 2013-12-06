@@ -1,11 +1,15 @@
 #ifndef FILEMENEGER_H
 #define FILEMENEGER_H
+
+#define OneGb 1000000000
+
 #include <QDebug>
 #include <QDir>
 #include <QObject>
 #include <QList>
 #include <QTextCodec>
 #include <QDateTime>
+#include <QFile>
 
 class FileMeneger : public QObject
 {

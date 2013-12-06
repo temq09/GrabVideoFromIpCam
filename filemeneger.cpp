@@ -70,8 +70,9 @@ QString FileMeneger::FindOldFile(QString path, quint64 &sizeDeletedFile)
 
 bool FileMeneger::DeleteOldFile(QString pathToDelete)
 {
-    qDebug() << "Удалаяем файл";
+    qDebug() << "Удалаяем файл - " << pathToDelete;
     QFile fileToDelete(pathToDelete);
+    qDebug() << fileToDelete.isOpen();
     return fileToDelete.remove();
 }
 

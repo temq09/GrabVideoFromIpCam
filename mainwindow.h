@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define Gb1 1000000000
+#define Mb100 100000000
+#define Mb1 1000000
+
 #include <QMainWindow>
 #include <QVector>
 #include <QScopedPointer>
