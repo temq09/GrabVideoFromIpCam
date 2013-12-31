@@ -10,10 +10,10 @@ FileMeneger::~FileMeneger()
     qDebug() << "Деструктор файл менеджера";
 }
 
-quint64 FileMeneger::ClearDir(QString pathForClear)
+qint64 FileMeneger::ClearDir(QString pathForClear)
 {
     qDebug() << "Функция очистки от старых файлов";
-    quint64 sizeDeletedFile = 0;
+    qint64 sizeDeletedFile = 0;
     QString oldFile = FindOldFile(pathForClear, sizeDeletedFile);
     if(DeleteOldFile(oldFile))
     {
@@ -27,7 +27,7 @@ quint64 FileMeneger::ClearDir(QString pathForClear)
     }
 }
 
-QString FileMeneger::FindOldFile(QString path, quint64 &sizeDeletedFile)
+QString FileMeneger::FindOldFile(QString path, qint64 &sizeDeletedFile)
 {
     qDebug() << "Ищем самый старый файл";
     QList<QString> dirList;
@@ -76,13 +76,13 @@ bool FileMeneger::DeleteOldFile(QString pathToDelete)
     return fileToDelete.remove();
 }
 
-quint64 FileMeneger::CalcSizeDir(QString pathToCurrentDir)
+qint64 FileMeneger::CalcSizeDir(QString pathToCurrentDir)
 {
     qDebug() << "Определяем размер папки " << pathToCurrentDir;
     QList<QString> dir;
     dir.clear();
 
-    quint64 totalSize = 0;
+    qint64 totalSize = 0;
     dir.push_back(pathToCurrentDir);
     while(!dir.isEmpty())
     {

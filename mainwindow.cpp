@@ -11,9 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     SetLineEditDigitValidator();
     path = "C:\\VideoFromCam";
     ui->le_Path->setText(path);
-    maxSizeALlFiles = 200000; // 200Mb.
     currentSizeALlFiles = 0;
     ui->le_SizeDir->setText("0");
+
+    SetContextMenuForCamList();
 
     connect(ui->pb_4, SIGNAL(clicked()), SLOT(HandleACtion4()));
     connect(ui->pb_9, SIGNAL(clicked()), SLOT(HandleAction9()));
@@ -27,6 +28,16 @@ MainWindow::MainWindow(QWidget *parent) :
     slot_ChangeSizeDir();
 }
 
+void MainWindow::SetContextMenuForCamList()
+{
+    ui->lv_listOfCam->setContextMenuPolicy(Qt::ActionsContextMenu);
+    aboutCamera = new QAction("Редактировать", ui->lv_listOfCam);
+    deleteCameraFromList = new QAction("Удалить из списка",ui->lv_listOfCam);
+    connect(aboutCamera, SIGNAL(triggered()), this, SLOT(action_aboutCamera()));
+    connect(deleteCameraFromList, SIGNAL(triggered()), this, SLOT(action_deleteCameraFromList()));
+    ui->lv_listOfCam->addAction(aboutCamera);
+}
+
 void MainWindow::SetLineEditDigitValidator()
 {
     QValidator *validator = new QIntValidator(0, 100, this);
@@ -38,7 +49,7 @@ void MainWindow::slot_GetDurationVideo()
     int duration = 0;
     switch (ui->cb_duration->currentIndex())
     {
-    case 0: duration = 120 * 1000;
+    case 0: duration = 120 * 1000;  //sec to msec
         break;
     case 1: duration = 240 * 1000;
         break;
@@ -291,10 +302,11 @@ void MainWindow::slot_ChangeSizeDir()
     }
     else
     {
-        maxSizeALlFiles = ui->le_SizeDir->text().toInt() * Gb1;                //переводим в байты
+        qint64 sizeDir = ui->le_SizeDir->text().toInt();
+        maxSizeALlFiles = sizeDir * Gb1;                //переводим в байты
         qDebug() << "Максимальный размер папки составляет - " << maxSizeALlFiles;
         FileMeneger filemeneger;
-        QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::CalcSizeDir, this->path);
+        QFuture<qint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::CalcSizeDir, this->path);
         currentSizeALlFiles = future.result();
         ClearCurrentDir(filemeneger, this->path);
     }
@@ -303,10 +315,10 @@ void MainWindow::slot_ChangeSizeDir()
 void MainWindow::ClearCurrentDir(FileMeneger &filemeneger, QString path)
 {
     int countDeletedFiles = 0;
-    int totalSizeDeletedFiles = 0;
-    while((maxSizeALlFiles - currentSizeALlFiles) < Mb100)
+    qint64 totalSizeDeletedFiles = 0;
+    while(maxSizeALlFiles - currentSizeALlFiles < Mb100)
     {
-        QFuture<quint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, path);
+        QFuture<qint64> future = QtConcurrent::run(&filemeneger, &FileMeneger::ClearDir, path);
         currentSizeALlFiles -= future.result();
         if(future.result()!=0)
         {
@@ -315,4 +327,24 @@ void MainWindow::ClearCurrentDir(FileMeneger &filemeneger, QString path)
         }
     }
     qDebug() << "Результаты очистки:" << "\nфайлов удаленно - " << countDeletedFiles << "\nобщий размер удаленных файлов - " <<totalSizeDeletedFiles/Mb1 << "Мб";
+}
+
+void MainWindow::action_aboutCamera()
+{
+    int index = -1;
+    index = ui->lv_listOfCam->currentIndex().row();
+    if(index != -1)
+    {
+        QScopedPointer<Dialog_addCamera> dialogAddCamera(new Dialog_addCamera(this));
+        connect(dialogAddCamera.data(), SIGNAL(EnterDataAreSuccessful(QString,QString,QString,QString)), this, SLOT(HandlerDataToAddCamera(QString,QString,QString,QString)));
+        QString currentIp = cameraIPAdress.at(index);
+        infoAboutCamera info = cameraListMap.value(currentIp);
+        dialogAddCamera.data()->setDataAboutCamera(info.ipAdress, info.port, info.userName, info.password);
+        dialogAddCamera.data()->exec();
+    }
+}
+
+void MainWindow::action_deleteCameraFromList()
+{
+
 }

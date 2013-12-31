@@ -18,10 +18,10 @@ class FileMeneger : public QObject
 public:
     explicit FileMeneger(QObject *parent = 0);
     ~FileMeneger();
-    quint64 CalcSizeDir(QString pathToCurrentDir);
-    quint64 ClearDir(QString pathForClear);
+    qint64 CalcSizeDir(QString pathToCurrentDir);
+    qint64 ClearDir(QString pathForClear);
     QString rootPath;
-    QString FindOldFile(QString path, quint64 &sizeDeletedFile);
+    QString FindOldFile(QString path, qint64 &sizeDeletedFile);
     bool DeleteOldFile(QString pathToDelete);
 
 public slots:

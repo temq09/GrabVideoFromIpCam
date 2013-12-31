@@ -17,6 +17,7 @@ class Dialog_addCamera : public QDialog
 public:
     explicit Dialog_addCamera(QWidget *parent = 0);
     ~Dialog_addCamera();
+    void setDataAboutCamera(QString _ip, QString _port, QString _login, QString _password);
 
 private:
     Ui::Dialog_addCamera *ui;

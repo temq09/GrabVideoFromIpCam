@@ -28,6 +28,7 @@
 #include <QFileDialog>
 #include <filemeneger.h>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QAction>
 
 namespace Ui {
 class MainWindow;
@@ -73,14 +74,16 @@ private:
             qDebug() << "Деструктор структуры";
         }
     };
-    QList<infoAboutCamera> cameraList;
+    //QList<infoAboutCamera> cameraList;
     QList<QString> cameraIPAdress;
     QMultiMap<QString, infoAboutCamera> cameraListMap;
     QStringListModel model;
     int durationVideo;
     QString path;
-    int maxSizeALlFiles;
-    int currentSizeALlFiles;
+    qint64 maxSizeALlFiles;
+    qint64 currentSizeALlFiles;
+    QAction *aboutCamera;
+    QAction *deleteCameraFromList;
 
     //Methods
     void decrementCountVideoWidget(int count);
@@ -91,6 +94,7 @@ private:
     void AddWidget(int indexWidget, int counterRow, int counterColumn);
     void SetLineEditDigitValidator();
     void ClearCurrentDir(FileMeneger &filemeneger, QString path);
+    void SetContextMenuForCamList();
 
 private slots:
     void HandleACtion4();
@@ -102,6 +106,8 @@ private slots:
     void slot_SetPath();
     void slot_AddNewFileSize(quint64 newFileSize);
     void slot_ChangeSizeDir();
+    void action_aboutCamera();
+    void action_deleteCameraFromList();
 
 signals:
     void signal_durationChanged(int duration);

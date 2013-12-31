@@ -76,7 +76,11 @@ void VideoStreamView::slot_StartStream()
     if(p_capture && stateVideo)
     {
         ui->lb_status->setText("есть сигнал");
-        GrabFrame();
+        qDebug() << "Поток для формы videostreamview - " << this->thread()->currentThreadId();
+        QFuture<void> future = QtConcurrent::run(this, &VideoStreamView::GrabFrame);
+        future.waitForFinished();
+        qDebug() << "Поток для формы videostreamview, после захвата кадра - " << this->thread()->currentThreadId();
+        //GrabFrame();
         QApplication::processEvents();
     }
     else
@@ -89,6 +93,8 @@ void VideoStreamView::slot_StartStream()
 
 void VideoStreamView::GrabFrame()
 {
+    qDebug() << "Поток захвата кадра - " << this->thread()->currentThreadId();
+    this->thread()->sleep(1000);
     IplImage *img = cvCreateImage(cvSize(needWidth, needHeight), IPL_DEPTH_8U, 3);
     try
     {
@@ -393,7 +399,11 @@ bool VideoStreamView::eventFilter(QObject *t, QEvent *e)
             qDebug() << "Resize label";
             ReSizeImg();
             if(stateVideo)
-                GrabFrame();
+            {
+                QFuture<void> future = QtConcurrent::run(this, &VideoStreamView::GrabFrame);
+                future.waitForFinished();
+            }
+                //GrabFrame();
         }
     }
     return QWidget::eventFilter(t,e);

@@ -43,3 +43,11 @@ void Dialog_addCamera::HandleEnterData()
     }
     emit EnterDataAreSuccessful(ip_adress,QString::number(port) , login, password);
 }
+
+void Dialog_addCamera::setDataAboutCamera(QString _ip, QString _port, QString _login, QString _password)
+{
+    ui->le_ipadress->setText(_ip);
+    ui->le_port->setText(_port);
+    ui->le_login->setText(_login);
+    ui->le_password->setText(_password);
+}
